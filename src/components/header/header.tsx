@@ -8,7 +8,7 @@ class Header extends Component {
       <header className={styles.header}>
         <div className={styles.headerWrapper}>
           <InputSearch />
-          <button className={styles.buttonSearch}></button>
+          <button className={styles.buttonSearch}>Найти</button>
         </div>
       </header>
     );
