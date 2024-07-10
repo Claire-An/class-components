@@ -11,3 +11,18 @@ main {
 .searchBlock {
     padding-bottom: 20px;
 }
+
+.buttonError {
+    padding: 10px 30px;
+    border: none;
+    border-radius: 20px;
+    font-family: Arial, sans-serif;
+    font-weight: 600;
+    margin-left: 20px;
+    background-color: #d4e0f5;
+
+    &:hover {
+        background-color: #a1c1f8;
+        cursor: pointer;
+    }
+}

@@ -1,8 +1,9 @@
 import { Component } from 'react';
 import { getData } from '../api';
 import { Character } from '../api/types';
-import ButtonSearch from '../components/button/buttonSearch';
+import ButtonSearch from '../components/buttonSearch/buttonSearch';
 import CardList from '../components/card/CardList';
+import ErrorBoundary from '../components/ErrorBoundary/ErrorBoundary';
 import InputSearch from '../components/inputSearch/inputSearch';
 import styles from './homePage.module.scss';
 
@@ -13,6 +14,7 @@ export interface HomeProps {
 export interface HomeState {
   data: Character[];
   value: string;
+  hasError: boolean;
 }
 
 class HomePage extends Component<HomeProps, HomeState> {
@@ -21,8 +23,10 @@ class HomePage extends Component<HomeProps, HomeState> {
     this.state = {
       data: [],
       value: localStorage.getItem('textSearch') || '',
+      hasError: false,
     };
     this.handleInputChange = this.handleInputChange.bind(this);
+    this.handleButtonErrorClick = this.handleButtonErrorClick.bind(this);
   }
 
   handleInputChange(val: string) {
@@ -31,7 +35,6 @@ class HomePage extends Component<HomeProps, HomeState> {
 
   async componentDidMount(): Promise<void> {
     const data = await getData(this.state.value);
-    console.log(data);
     if (data) {
       this.setState(data);
     } else {
@@ -40,25 +43,39 @@ class HomePage extends Component<HomeProps, HomeState> {
   }
 
   handleButtonClick = async (val: { data: Character[] }): Promise<void> => {
-    console.log('handleButtonClick ' + val.data);
     this.setState({ data: val.data });
   };
 
+  handleButtonErrorClick(): void {
+    this.setState({ hasError: true });
+  }
+
   render() {
+    if (this.state.hasError) {
+      throw new Error('ErrorBoundary error');
+    }
     const data: Character[] = this.state.data;
     return (
       <main className={styles.wrapper}>
-        <div className={styles.searchBlock}>
-          <InputSearch
-            onHandleChange={this.handleInputChange}
-            textSearch={this.state.value}
-          />
-          <ButtonSearch
-            onButtonClick={this.handleButtonClick}
-            value={this.state.value}
-          />
-        </div>
-        <CardList cards={data} />
+        <ErrorBoundary>
+          <div className={styles.searchBlock}>
+            <InputSearch
+              onHandleChange={this.handleInputChange}
+              textSearch={this.state.value}
+            />
+            <ButtonSearch
+              onButtonClick={this.handleButtonClick}
+              value={this.state.value}
+            />
+            <button
+              onClick={this.handleButtonErrorClick}
+              className={styles.buttonError}
+            >
+              Ошибка
+            </button>
+          </div>
+          <CardList cards={data} />
+        </ErrorBoundary>
       </main>
     );
   }
