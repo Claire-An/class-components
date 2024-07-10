@@ -23,3 +23,8 @@ export interface Character {
   status?: string;
   url?: string;
 }
+
+export interface ApiResponse {
+  info: Info;
+  results: Character[];
+}

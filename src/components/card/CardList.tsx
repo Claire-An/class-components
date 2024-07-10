@@ -9,9 +9,9 @@ export interface CardListProps {
 const CardList: FC<CardListProps> = ({ cards }) => {
   return (
     <div className={styles.cardList}>
-      {cards.map((card) => (
-        <Card key={card.id} card={card} />
-      ))}
+      {cards && cards.length > 0
+        ? cards.map((card) => <Card key={card.id} card={card} />)
+        : 'Данные не найдены'}
     </div>
   );
 };

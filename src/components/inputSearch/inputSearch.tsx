@@ -6,21 +6,34 @@ interface State {
 }
 
 interface Props {
-  value?: string;
+  textSearch: string;
+  onHandleChange: (value: string) => void;
 }
 
 class InputSearch extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
+    this.state = {
+      value: props.textSearch,
+    };
+    this.handleChange = this.handleChange.bind(this);
+  }
+
+  handleChange(event: React.ChangeEvent<HTMLInputElement>) {
+    const inputSearch: HTMLInputElement = event.currentTarget;
+    this.setState(
+      () => ({ value: inputSearch.value }),
+      () => this.props.onHandleChange(inputSearch.value),
+    );
   }
 
   render() {
-    const valueInput = this.props.value as string;
     return (
       <input
         className={styles.inputSearch}
         placeholder="Поиск"
-        value={valueInput}
+        onChange={this.handleChange}
+        value={this.state.value}
       />
     );
   }
