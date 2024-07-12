@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { getData } from '../api';
 import { Character } from '../api/types';
 import ButtonSearch from '../components/buttonSearch/buttonSearch';
@@ -16,17 +16,20 @@ const HomePage: React.FC = () => {
     setValue(val);
   };
 
-  useEffect(() => {
-    const getCharacter = async () => {
+  const getCharacter = useCallback(async () => {
+    if (value === localStorage.getItem('textSearch')) {
       const dataCharacter = await getData(value);
       if (dataCharacter) {
-        setData(data);
+        setData(dataCharacter.data);
       } else {
         setData([]);
       }
-    };
+    }
+  }, [value]);
+
+  useEffect(() => {
     getCharacter();
-  }, [data, value]);
+  }, [getCharacter]);
 
   const handleButtonClick = async (val: {
     data: Character[];
