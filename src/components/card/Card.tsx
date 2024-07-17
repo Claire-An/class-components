@@ -16,7 +16,7 @@ interface CardItemProps {
 
 const Card: FC<CardItemProps> = ({ card }) => {
   return (
-    <div className={styles.card}>
+    <div className={styles.card} data-testid="card">
       <img src={card.image} className={styles.card__img} />
       <h4 className={styles.name}>Имя: {card.name}</h4>
       <p className={styles.card__p}>
