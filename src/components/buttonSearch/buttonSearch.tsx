@@ -1,6 +1,5 @@
 import { getData } from '../../api';
 import { Character } from '../../api/types';
-import styles from './buttonSearch.module.scss';
 
 interface Props {
   value: string;
@@ -20,11 +19,7 @@ const ButtonSearch = (props: Props) => {
     }
   };
 
-  return (
-    <button className={styles.buttonSearch} onClick={handleButtonClick}>
-      Найти
-    </button>
-  );
+  return <button onClick={handleButtonClick}>Найти</button>;
 };
 
 export default ButtonSearch;

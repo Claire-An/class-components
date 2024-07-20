@@ -11,3 +11,12 @@
         outline: 1px solid #2A592E;
     }
 }
+
+.inputsearchDark {
+    background-color: #595b5d;
+    color: #cac4c4;
+    
+    &:focus {
+        outline: 1px solid #595b5d;
+    }
+}

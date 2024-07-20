@@ -1,4 +1,5 @@
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useContext, useState } from 'react';
+import { ThemeContext } from '../../providers/ThemeProvider';
 import styles from './inputSearch.module.scss';
 
 interface Props {
@@ -9,6 +10,7 @@ interface Props {
 const InputSearch = (props: Props) => {
   const { textSearch, onHandleChange } = props;
   const [value, setValue] = useState(textSearch);
+  const { theme } = useContext(ThemeContext);
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const inputSearch: HTMLInputElement = event.currentTarget;
@@ -19,7 +21,10 @@ const InputSearch = (props: Props) => {
 
   return (
     <input
-      className={styles.inputSearch}
+      className={[
+        styles.inputSearch,
+        theme === 'dark' ? styles.inputsearchDark : '',
+      ].join(' ')}
       placeholder="Поиск"
       onChange={handleChange}
       value={value}

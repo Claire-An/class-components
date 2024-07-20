@@ -1,4 +1,5 @@
-import { FC } from 'react';
+import { FC, useContext } from 'react';
+import { ThemeContext } from '../../providers/ThemeProvider';
 import styles from './card.module.scss';
 
 export interface CardForm {
@@ -15,8 +16,15 @@ interface CardItemProps {
 }
 
 const Card: FC<CardItemProps> = ({ card }) => {
+  const { theme } = useContext(ThemeContext);
+
   return (
-    <div className={styles.card} data-testid="card">
+    <div
+      className={[styles.card, theme === 'dark' ? styles.cardDark : ''].join(
+        ' ',
+      )}
+      data-testid="card"
+    >
       <img src={card.image} className={styles.card__img} />
       <h4 className={styles.name}>Имя: {card.name}</h4>
       <p className={styles.card__p}>
