@@ -4,10 +4,10 @@ export interface Position {
 }
 
 export interface Info {
-  count: number;
-  next: string;
-  pages: number;
-  prev: string;
+  count?: number;
+  next?: string;
+  pages?: number;
+  prev?: string;
 }
 
 export interface Character {

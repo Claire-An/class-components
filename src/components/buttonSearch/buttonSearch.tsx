@@ -1,9 +1,9 @@
 import { getData } from '../../api';
-import { Character } from '../../api/types';
+import { Character, Info } from '../../api/types';
 
 interface Props {
   value: string;
-  onButtonClick: (val: { data: Character[] }) => void;
+  onButtonClick: (val: { data: Character[]; info: Info }) => void;
 }
 
 const ButtonSearch = (props: Props) => {
@@ -15,7 +15,7 @@ const ButtonSearch = (props: Props) => {
     if (data) {
       onButtonClick(data);
     } else {
-      onButtonClick({ data: [] });
+      onButtonClick({ data: [], info: {} });
     }
   };
 

@@ -13,9 +13,9 @@ describe('Renders HomePage correctly', async () => {
     );
   });
 
-  it('Should render the CardList correctly', async () => {
+  it('Should render the buttonTheme correctly', async () => {
     render(<HomePage />);
-    const cardList = await screen.findByTestId('cardList');
-    expect(cardList).toBeInTheDocument();
+    const buttonTheme = await screen.findByTestId('buttonTheme');
+    expect(buttonTheme).toBeInTheDocument();
   });
 });

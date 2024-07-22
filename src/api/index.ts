@@ -1,16 +1,17 @@
-import { ApiResponse, Character } from './types';
+import { ApiResponse, Character, Info } from './types';
 
 const urlApi = 'https://rickandmortyapi.com/api/character';
 
-export const getData = async (value: string = '') => {
+export const getData = async (value: string = '', page: number = 1) => {
   try {
-    const response: Response = value
-      ? await fetch(urlApi + `/?name=${value}`)
-      : await fetch(urlApi);
+    const respTxt: string =
+      (value ? `/?name=${value}` : '') + (page > 1 ? `/?page=${page}` : '');
+    const response: Response = await fetch(urlApi + respTxt);
     if (response.ok) {
       const data: Promise<ApiResponse> = await response.json();
       const result: Character[] = (await data).results;
-      return { data: result };
+      const info: Info = (await data).info;
+      return { data: result, info: info };
     }
     return;
   } catch (err) {
