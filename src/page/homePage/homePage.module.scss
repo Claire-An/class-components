@@ -38,3 +38,13 @@
 .pagesDark {
     color: #cac4c4;
 }
+
+.flyout {
+    position: fixed;
+    padding: 20px;
+    border-radius: 5px;
+    bottom: 30px;
+    left: 10px;
+    z-index: 10;
+    background-color: #cac4c4;
+}

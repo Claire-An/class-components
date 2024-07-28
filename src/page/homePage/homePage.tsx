@@ -1,9 +1,11 @@
 import { useCallback, useContext, useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import ButtonSearch from '../../components/buttonSearch/buttonSearch';
 import CardList from '../../components/card/CardList';
 import InputSearch from '../../components/inputSearch/inputSearch';
 import { ThemeContext } from '../../providers/ThemeProvider';
 import { getData } from '../../redux/api';
+import { RootState } from '../../redux/store';
 import styles from './homePage.module.scss';
 
 const HomePage: React.FC = () => {
@@ -19,6 +21,7 @@ const HomePage: React.FC = () => {
     name: valueSearch,
   });
   const prefetchPage = getData.usePrefetch('getDataApi');
+  const favorites = useSelector((state: RootState) => state.favorites);
 
   const prefetchNext = useCallback(() => {
     prefetchPage({ page: currentPage + 1 });
@@ -110,6 +113,13 @@ const HomePage: React.FC = () => {
               {'>'}
             </button>
           </div>
+          {favorites.length > 0 ? (
+            <div className={styles.flyout}>
+              Количество выбрынных элементов: {favorites.length}
+            </div>
+          ) : (
+            ''
+          )}
         </>
       ) : (
         <div
