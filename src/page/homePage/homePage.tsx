@@ -1,10 +1,11 @@
 import { useCallback, useContext, useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import ButtonSearch from '../../components/buttonSearch/buttonSearch';
 import CardList from '../../components/card/CardList';
 import InputSearch from '../../components/inputSearch/inputSearch';
 import { ThemeContext } from '../../providers/ThemeProvider';
 import { getData } from '../../redux/api';
+import { clearFavorites } from '../../redux/favorites.slice';
 import { RootState } from '../../redux/store';
 import styles from './homePage.module.scss';
 
@@ -16,12 +17,13 @@ const HomePage: React.FC = () => {
   const [hasError, setHasError] = useState(false);
   const { theme, setTheme } = useContext(ThemeContext);
   const [currentPage, setCurrentPage] = useState(1);
-  const { data, isLoading } = getData.useGetDataApiQuery({
+  const { data, error, isLoading } = getData.useGetDataApiQuery({
     page: currentPage,
     name: valueSearch,
   });
   const prefetchPage = getData.usePrefetch('getDataApi');
   const favorites = useSelector((state: RootState) => state.favorites);
+  const dispatch = useDispatch();
 
   const prefetchNext = useCallback(() => {
     prefetchPage({ page: currentPage + 1 });
@@ -31,7 +33,8 @@ const HomePage: React.FC = () => {
     if (currentPage !== data?.info.pages) {
       prefetchNext();
     }
-  }, [currentPage, prefetchNext, data?.info.pages]);
+    localStorage.setItem('textSearch', valueSearch);
+  }, [currentPage, prefetchNext, data?.info.pages, valueSearch]);
 
   if (isLoading) return <h1>Loading...</h1>;
 
@@ -56,7 +59,6 @@ const HomePage: React.FC = () => {
   if (hasError) {
     throw new Error('ErrorBoundary error');
   }
-
   return (
     <div
       className={[
@@ -82,7 +84,7 @@ const HomePage: React.FC = () => {
           </button>
         </div>
       </div>
-      {data?.results && data.results.length > 0 ? (
+      {!error && data?.results && data.results.length > 0 ? (
         <>
           <CardList cards={data.results} />
           <div className={styles.pagination}>
@@ -115,7 +117,10 @@ const HomePage: React.FC = () => {
           </div>
           {favorites.length > 0 ? (
             <div className={styles.flyout}>
-              Количество выбрынных элементов: {favorites.length}
+              <p>Количество выбрынных элементов: {favorites.length}</p>
+              <button onClick={() => dispatch(clearFavorites())}>
+                Очистить все
+              </button>
             </div>
           ) : (
             ''

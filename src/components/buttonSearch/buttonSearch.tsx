@@ -8,15 +8,14 @@ interface Props {
 
 const ButtonSearch = (props: Props) => {
   const { value, onButtonClick } = props;
-  const { data } = getData.useGetDataApiQuery({ page: '', name: value });
+  const { data } = getData.useGetDataApiQuery({ page: 1, name: value });
 
   const handleButtonClick = async () => {
-    if (data?.results) {
+    if (data?.results && data.results.length > 0) {
       onButtonClick({ data: data.results, info: data.info });
     } else {
       onButtonClick({ data: [], info: {} });
     }
-    localStorage.setItem('textSearch', value);
   };
 
   return <button onClick={handleButtonClick}>Найти</button>;

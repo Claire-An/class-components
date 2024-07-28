@@ -13,11 +13,14 @@ export const favoritesSlice = createSlice({
       if (index !== -1) {
         state.splice(index, 1);
       } else {
-        state.push({ ...action.payload, isFavorite: true });
+        state.push({ ...action.payload });
       }
+    },
+    clearFavorites: (state) => {
+      state.splice(0, state.length);
     },
   },
 });
 
-export const { toggleFavorites } = favoritesSlice.actions;
+export const { toggleFavorites, clearFavorites } = favoritesSlice.actions;
 export const favoritesReducer = favoritesSlice.reducer;
