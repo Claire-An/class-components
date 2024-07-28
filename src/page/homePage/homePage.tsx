@@ -105,6 +105,7 @@ const HomePage: React.FC = () => {
               onClick={() => setCurrentPage(() => currentPage + 1)}
               disabled={currentPage === data.info.pages}
               onMouseEnter={prefetchNext}
+              data-testid="button-next"
             >
               {'>'}
             </button>

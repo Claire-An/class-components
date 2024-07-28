@@ -1,9 +1,10 @@
+// import { render } from '@testing-library/react';
 import { render } from '@testing-library/react';
 import { describe, it } from 'vitest';
 import App from '../App';
 
-describe('Renders NotFoundPage correctly', async () => {
-  it('Should render the NotFoundPage correctly', async () => {
+describe('Renders App correctly', async () => {
+  it('Should render the App correctly', async () => {
     render(<App />);
   });
 });
