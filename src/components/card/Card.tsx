@@ -1,5 +1,10 @@
 import { FC, useContext } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import HeartImg from '../../assets/heart.svg';
+import HeartImgRed from '../../assets/heartRed.svg';
 import { ThemeContext } from '../../providers/ThemeProvider';
+import { toggleFavorites } from '../../redux/favorites.slice';
+import { RootState } from '../../redux/store';
 import styles from './card.module.scss';
 
 export interface CardForm {
@@ -17,6 +22,8 @@ interface CardItemProps {
 
 const Card: FC<CardItemProps> = ({ card }) => {
   const { theme } = useContext(ThemeContext);
+  const favorites = useSelector((state: RootState) => state.favorites);
+  const dispatch = useDispatch();
 
   return (
     <div
@@ -30,6 +37,15 @@ const Card: FC<CardItemProps> = ({ card }) => {
       <p className={styles.card__p}>
         <b>Пол:</b> {card.gender == 'Male' ? 'Муж' : 'Жен'}
       </p>
+      <img
+        src={
+          favorites.findIndex((item) => item.id === card.id) === -1
+            ? HeartImg
+            : HeartImgRed
+        }
+        className={styles.favotitesImg}
+        onClick={() => dispatch(toggleFavorites(card))}
+      />
     </div>
   );
 };

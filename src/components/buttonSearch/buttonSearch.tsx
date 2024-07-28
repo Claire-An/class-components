@@ -1,5 +1,3 @@
-// import { getData } from '../../api';
-// import { getData } from '../../api';
 import { Character, Info } from '../../api/types';
 import { getData } from '../../redux/api';
 

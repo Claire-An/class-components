@@ -16,5 +16,3 @@ export const getData = createApi({
     }),
   }),
 });
-
-// export const useGetDataApi: (arg: TypeQuery) => ReturnType<typeof getData.endpoints.getDataApi.useQuery> = getData.endpoints.getDataApi.useQuery;
