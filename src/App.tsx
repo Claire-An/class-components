@@ -19,7 +19,7 @@ const router: Route[] = [
   {
     path: '/',
     element: <HomePage />,
-    pageTitle: 'Home Page',
+    pageTitle: 'HomePage',
   },
   {
     path: '*',

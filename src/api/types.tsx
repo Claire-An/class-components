@@ -28,3 +28,8 @@ export interface ApiResponse {
   info: Info;
   results: Character[];
 }
+
+export interface TypeQuery {
+  page?: number;
+  name?: string;
+}

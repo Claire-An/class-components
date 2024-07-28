@@ -1,62 +1,43 @@
 import { useCallback, useContext, useEffect, useState } from 'react';
-import { getData } from '../../api';
-import { Character, Info } from '../../api/types';
 import ButtonSearch from '../../components/buttonSearch/buttonSearch';
 import CardList from '../../components/card/CardList';
 import InputSearch from '../../components/inputSearch/inputSearch';
-import Pagination from '../../components/Pagination/Pagination';
 import { ThemeContext } from '../../providers/ThemeProvider';
+import { getData } from '../../redux/api';
 import styles from './homePage.module.scss';
 
 const HomePage: React.FC = () => {
   const [value, setValue] = useState(localStorage.getItem('textSearch') || '');
-  const [data, setData] = useState<Character[]>([]);
-  const [info, setInfo] = useState<Info>();
+  const [valueSearch, setValueSearch] = useState(
+    localStorage.getItem('textSearch') || '',
+  );
   const [hasError, setHasError] = useState(false);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [leftDisable, setLeftDisable] = useState(true);
-  const [rightDisable, setRightDisable] = useState(false);
-
   const { theme, setTheme } = useContext(ThemeContext);
+  const [currentPage, setCurrentPage] = useState(1);
+  const { data, isLoading } = getData.useGetDataApiQuery({
+    page: currentPage,
+    name: valueSearch,
+  });
+  const prefetchPage = getData.usePrefetch('getDataApi');
+
+  const prefetchNext = useCallback(() => {
+    prefetchPage({ page: currentPage + 1 });
+  }, [prefetchPage, currentPage]);
+
+  useEffect(() => {
+    if (currentPage !== data?.info.pages) {
+      prefetchNext();
+    }
+  }, [currentPage, prefetchNext, data?.info.pages]);
+
+  if (isLoading) return <h1>Loading...</h1>;
 
   const handleInputChange = (val: string) => {
     setValue(val);
   };
 
-  const getCharacter = useCallback(async () => {
-    if (value === localStorage.getItem('textSearch')) {
-      const dataCharacter = await getData(value, currentPage);
-      if (dataCharacter?.data) {
-        setData(dataCharacter.data);
-      } else {
-        setData([]);
-      }
-      if (dataCharacter?.info) {
-        setInfo(dataCharacter.info);
-      } else {
-        setData([]);
-      }
-    }
-  }, [currentPage, value]);
-
-  const disableButton = useCallback(() => {
-    setLeftDisable(currentPage === 1);
-    setRightDisable(currentPage === info?.pages);
-  }, [currentPage, info?.pages]);
-
-  useEffect(() => {
-    getCharacter();
-    disableButton();
-  }, [disableButton, getCharacter]);
-
-  const handleButtonClick = async (val: {
-    data: Character[];
-    info: Info;
-  }): Promise<void> => {
-    setCurrentPage(1);
-    setData(val.data);
-    setInfo(val.info);
-    disableButton();
+  const handleButtonClick = async (): Promise<void> => {
+    setValueSearch(value);
   };
 
   const handleButtonErrorClick = (): void => {
@@ -68,24 +49,6 @@ const HomePage: React.FC = () => {
     setTheme(currentTheme);
     localStorage.setItem('currentTheme', currentTheme);
   };
-
-  const handleNextClick = useCallback(() => {
-    const next = currentPage + 1;
-    if (info?.pages && next < info.pages) {
-      setCurrentPage(next);
-      getCharacter();
-    }
-    disableButton();
-  }, [currentPage, disableButton, getCharacter, info?.pages]);
-
-  const handlePrevClick = useCallback(() => {
-    const prev = currentPage - 1;
-    if (info?.pages && prev > 0) {
-      setCurrentPage(prev);
-      getCharacter();
-    }
-    disableButton();
-  }, [currentPage, disableButton, getCharacter, info?.pages]);
 
   if (hasError) {
     throw new Error('ErrorBoundary error');
@@ -101,7 +64,7 @@ const HomePage: React.FC = () => {
       <div className={styles.header}>
         <div className={styles.searchBlock}>
           <InputSearch onHandleChange={handleInputChange} textSearch={value} />
-          <ButtonSearch onButtonClick={handleButtonClick} value={value} />
+          <ButtonSearch onButtonClick={handleButtonClick} value={valueSearch} />
           <button onClick={handleButtonErrorClick} className={styles.button}>
             Ошибка
           </button>
@@ -116,17 +79,36 @@ const HomePage: React.FC = () => {
           </button>
         </div>
       </div>
-      {data && data.length > 0 ? (
+      {data?.results && data.results.length > 0 ? (
         <>
-          <CardList cards={data} />
-          <Pagination
-            current={currentPage}
-            leftDisable={leftDisable}
-            rightDisable={rightDisable}
-            total={info?.pages}
-            onNextClick={handleNextClick}
-            onPrevClick={handlePrevClick}
-          />
+          <CardList cards={data.results} />
+          <div className={styles.pagination}>
+            <button
+              className={styles.arrow}
+              onClick={() => setCurrentPage(() => currentPage - 1)}
+              disabled={currentPage === 1}
+            >
+              {'<'}
+            </button>
+            {currentPage && data.info.pages && (
+              <span
+                className={[
+                  styles.pages,
+                  theme === 'dark' ? styles.pagesDark : '',
+                ].join(' ')}
+              >
+                {currentPage} / {data.info.pages}
+              </span>
+            )}
+            <button
+              className={styles.arrow}
+              onClick={() => setCurrentPage(() => currentPage + 1)}
+              disabled={currentPage === data.info.pages}
+              onMouseEnter={prefetchNext}
+            >
+              {'>'}
+            </button>
+          </div>
         </>
       ) : (
         <div

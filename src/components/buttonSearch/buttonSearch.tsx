@@ -1,5 +1,7 @@
-import { getData } from '../../api';
+// import { getData } from '../../api';
+// import { getData } from '../../api';
 import { Character, Info } from '../../api/types';
+import { getData } from '../../redux/api';
 
 interface Props {
   value: string;
@@ -8,15 +10,15 @@ interface Props {
 
 const ButtonSearch = (props: Props) => {
   const { value, onButtonClick } = props;
+  const { data } = getData.useGetDataApiQuery({ page: '', name: value });
 
   const handleButtonClick = async () => {
-    localStorage.setItem('textSearch', value);
-    const data = await getData(value);
-    if (data) {
-      onButtonClick(data);
+    if (data?.results) {
+      onButtonClick({ data: data.results, info: data.info });
     } else {
       onButtonClick({ data: [], info: {} });
     }
+    localStorage.setItem('textSearch', value);
   };
 
   return <button onClick={handleButtonClick}>Найти</button>;

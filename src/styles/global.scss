@@ -20,7 +20,7 @@ button {
     font-weight: 600;
     background-color: #d4e0f5;
 
-    &:hover {
+    &:hover:not(:disabled) {
         background-color: #a1c1f8;
         cursor: pointer;
     }
@@ -32,4 +32,5 @@ button {
             background-color: #434446;
         }
     }
+
 }
