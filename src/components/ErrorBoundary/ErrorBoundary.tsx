@@ -6,6 +6,7 @@ interface Props {
 
 interface State {
   hasError: boolean;
+  theme: string;
 }
 
 class ErrorBoundary extends Component<Props, State> {
@@ -13,6 +14,7 @@ class ErrorBoundary extends Component<Props, State> {
     super(props);
     this.state = {
       hasError: false,
+      theme: localStorage.getItem('currentTheme') || 'light',
     };
   }
 
@@ -29,7 +31,12 @@ class ErrorBoundary extends Component<Props, State> {
   render() {
     if (this.state.hasError) {
       return (
-        <div>
+        <div
+          className={[
+            this.state.theme,
+            this.state.theme === 'dark' ? 'errorDivDark' : '',
+          ].join(' ')}
+        >
           Что-то пошло не так...
           <button onClick={() => window.location.reload()}>Вернуться</button>
         </div>
