@@ -1,12 +1,10 @@
 import { useCallback, useContext, useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import ButtonSearch from '../../components/buttonSearch/buttonSearch';
 import CardList from '../../components/card/CardList';
+import Flyout from '../../components/flyout/flyout';
 import InputSearch from '../../components/inputSearch/inputSearch';
 import { ThemeContext } from '../../providers/ThemeProvider';
 import { getData } from '../../redux/api';
-import { clearFavorites } from '../../redux/favorites.slice';
-import { RootState } from '../../redux/store';
 import styles from './homePage.module.scss';
 
 const HomePage: React.FC = () => {
@@ -22,8 +20,6 @@ const HomePage: React.FC = () => {
     name: valueSearch,
   });
   const prefetchPage = getData.usePrefetch('getDataApi');
-  const favorites = useSelector((state: RootState) => state.favorites);
-  const dispatch = useDispatch();
 
   const prefetchNext = useCallback(() => {
     prefetchPage({ page: currentPage + 1 });
@@ -115,16 +111,7 @@ const HomePage: React.FC = () => {
               {'>'}
             </button>
           </div>
-          {favorites.length > 0 ? (
-            <div className={styles.flyout}>
-              <p>Количество выбрынных элементов: {favorites.length}</p>
-              <button onClick={() => dispatch(clearFavorites())}>
-                Очистить все
-              </button>
-            </div>
-          ) : (
-            ''
-          )}
+          <Flyout />
         </>
       ) : (
         <div
