@@ -1,9 +1,10 @@
 import { FC } from 'react';
-import Card, { CardForm } from './Card';
+import { Character } from '../../api/types';
+import Card from './Card';
 import styles from './cardList.module.scss';
 
 export interface CardListProps {
-  cards: CardForm[];
+  cards: Character[];
 }
 
 const CardList: FC<CardListProps> = ({ cards }) => {

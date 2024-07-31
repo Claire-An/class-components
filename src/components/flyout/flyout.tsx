@@ -26,10 +26,16 @@ const Flyout = () => {
 
   return (
     favorites.length > 0 && (
-      <div className={styles.flyout}>
-        <p>Количество выбрынных элементов: {favorites.length}</p>
+      <div className={styles.flyout} data-testid="flyout">
+        <p>
+          Количество выбрынных элементов:{' '}
+          <span data-testid="countFavorites">{favorites.length}</span>
+        </p>
         <div className={styles.flyout__button}>
-          <button onClick={() => dispatch(clearFavorites())}>
+          <button
+            data-testid="clearFavorites"
+            onClick={() => dispatch(clearFavorites())}
+          >
             Очистить все
           </button>
           <a href={downloadUrl} download={`${favorites.length}_characters.csv`}>

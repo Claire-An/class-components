@@ -14,7 +14,8 @@ export default defineConfig({
       provider: 'v8',
       enabled: true,
       all: true,
-      reporter: ['text'],
+      include: ['**/src/**'],
+      exclude: ['__test__'],
     },
   },
 });

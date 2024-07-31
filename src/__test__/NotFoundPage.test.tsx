@@ -1,23 +1,24 @@
 import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
-import { BrowserRouter } from 'react-router-dom';
+import { Provider } from 'react-redux';
 import { describe, expect, it } from 'vitest';
 import NotFoundPage from '../page/NotFoundPage/NotFoundPage';
+import { store } from '../redux/store';
 
 describe('Renders NotFoundPage correctly', async () => {
   it('Should render the NotFoundPage correctly', async () => {
     render(
-      <BrowserRouter>
+      <Provider store={store}>
         <NotFoundPage />
-      </BrowserRouter>,
+      </Provider>,
     );
   });
 
   it('Should render message', async () => {
     render(
-      <BrowserRouter>
+      <Provider store={store}>
         <NotFoundPage />
-      </BrowserRouter>,
+      </Provider>,
     );
     const text = await screen.findByText('Страница не найдена');
     expect(text).toBeInTheDocument();

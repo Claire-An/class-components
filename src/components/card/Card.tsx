@@ -1,5 +1,6 @@
 import { FC, useContext } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Character } from '../../api/types';
 import HeartImg from '../../assets/heart.svg';
 import HeartImgRed from '../../assets/heartRed.svg';
 import { ThemeContext } from '../../providers/ThemeProvider';
@@ -7,17 +8,8 @@ import { toggleFavorites } from '../../redux/favorites.slice';
 import { RootState } from '../../redux/store';
 import styles from './card.module.scss';
 
-export interface CardForm {
-  id?: number;
-  status?: string;
-  name: string;
-  gender?: string;
-  image?: string;
-  species?: string;
-}
-
 interface CardItemProps {
-  card: CardForm;
+  card: Character;
 }
 
 const Card: FC<CardItemProps> = ({ card }) => {
