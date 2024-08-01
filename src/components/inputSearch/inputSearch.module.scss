@@ -1,0 +1,22 @@
+.inputSearch {
+    border: 1px solid #202B21;
+    border-radius: 30px;
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    padding: 5px 10px 5px 25px;
+    background: url(../../assets/search.png) no-repeat center left 5px;
+    outline: none;
+
+    &:focus {
+        outline: 1px solid #2A592E;
+    }
+}
+
+.inputsearchDark {
+    background-color: #595b5d;
+    color: #cac4c4;
+    
+    &:focus {
+        outline: 1px solid #595b5d;
+    }
+}
