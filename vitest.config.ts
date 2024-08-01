@@ -15,7 +15,7 @@ export default defineConfig({
       enabled: true,
       all: true,
       include: ['**/src/**'],
-      exclude: ['__test__'],
+      exclude: ['src/__test__'],
     },
   },
 });
