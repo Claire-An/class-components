@@ -28,6 +28,7 @@ const InputSearch = (props: Props) => {
       placeholder="Поиск"
       onChange={handleChange}
       value={value}
+      data-testid="inputSearch"
     />
   );
 };

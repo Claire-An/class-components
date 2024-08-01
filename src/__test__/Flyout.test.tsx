@@ -18,7 +18,7 @@ describe('Renders Flyout correctly', async () => {
     );
   });
 
-  it('Should render the Download correctly', async () => {
+  it('Should render count favorites correctly', async () => {
     store.dispatch(toggleFavorites(mockCards[0]));
     store.dispatch(toggleFavorites(mockCards[1]));
     store.dispatch(toggleFavorites(mockCards[2]));
